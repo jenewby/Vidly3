@@ -9,6 +9,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Vidly3.Models;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace Vidly3.Controllers
 {
@@ -151,12 +152,22 @@ namespace Vidly3.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                // Temp
+                var roleStore = new RoleStore<IdentityRole>();
+                var roleManager = new RoleManager<IdentityRole>(roleStore);
+
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, DriversLicense = model.DriversLicense, Phone = model.Phone};
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
-                    
+
+                    //used this to create the CanManageMovieRole
+                    //var roleStoreD = new RoleStore<IdentityRole>(new ApplicationDbContext());
+                    //var roleManagerD = new RoleManager<IdentityRole>(roleStoreD);
+                    //await roleManagerD.CreateAsync(new IdentityRole("CanManageMovie"));
+                    //await UserManager.AddToRoleAsync(user.Id, "CanManageMovie");
+                    //await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+
                     // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
                     // Send an email with this link
                     // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
@@ -367,7 +378,7 @@ namespace Vidly3.Controllers
                 {
                     return View("ExternalLoginFailure");
                 }
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, DriversLicense = model.DriversLicense, Phone = model.Phone};
                 var result = await UserManager.CreateAsync(user);
                 if (result.Succeeded)
                 {

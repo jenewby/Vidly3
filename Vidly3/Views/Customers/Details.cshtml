@@ -1,0 +1,27 @@
+﻿@model Vidly3.Models.Customer
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div>
+    <h1>
+        @Model.Name
+    </h1>
+    <ul>
+        <li>@Html.DisplayNameFor(model => model.MembershipType): @Html.DisplayFor(model => model.MembershipType.Name)</li>
+        @if (Model.Birthdate != null)
+        {
+            <li>@Html.DisplayNameFor(model => model.Birthdate): @Model.Birthdate.Value.Date.ToString("MM/dd/yyyy")</li>
+        }
+
+    </ul>
+
+
+
+</div>
+<p>
+
+    @Html.ActionLink("Back to List", "Index")
+</p>
